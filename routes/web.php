@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Website;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/{slug}', function ($slug) {
+    $website = Website::where('slug', $slug)
+        ->with(['services'])
+        ->firstOrFail();
+
+    return view('website', compact('website'));
 });
